@@ -107,4 +107,9 @@ amazon.com (domain)
 	harmless: 67
 	timeout: 0
 ```
-
+# Future Improvements
+- Method to handle repeat fields in Whois response
+- Validation of inputs (ip and domains)
+- Method to allow a user to specify fields to include
+- Optional output of raw results
+- Optional method to save output and/or raw results
