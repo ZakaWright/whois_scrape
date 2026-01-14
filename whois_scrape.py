@@ -17,8 +17,14 @@ parser = argparse.ArgumentParser(
 
 #parser.add_argument('domain', help='Domain to lookup')
 parser.add_argument('-d', '--domain', help='Domain to lookup')
-parser.add_argument('-i', '--ip', help='IP address to lookup')
+parser.add_argument('-i', '--ip', help='IP address to lookup. Multiple IPs must be comma separated X.X.X.X,Y.Y.Y.Y')
 args = parser.parse_args()
+
+# split IPs if there are multiple
+# TODO implement IP validation
+if args.ip is not None:
+    ips = args.ip.split(',')
+    args.ip = ips
 
 if args.domain is not None:
     # resolve domain
@@ -42,11 +48,14 @@ if args.domain is not None:
         exit('Failed to resolve IP addresses')
 
     # for testing purposes, only select the first IP address. This is to limit API calls
-    # Future implementations of this program need to handle lists of IP addresses... TODO
-    args.ip = ips[0]
+    #args.ip = ips  if args.ip is None else args.ip + ips
+    args.ip = ips[0] if args.ip is None else args.ip + [ips[0]]
 
     # get domain registration information
     try:
-        whois.whois_query(args.domain)
+        registration = whois.domain_query(args.domain)
     except:
         exit('Error reaching whois information')
+
+# IP information
+print(shodan.lookup(args.ip))

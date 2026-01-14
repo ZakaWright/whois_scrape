@@ -8,6 +8,9 @@ def parse_whois(response):
     # flag for when the notice starts
     notice = False
 
+    # TODO add some way to process multiples of fields (eg. Domain Status and Name Server)
+    # simplest way will probably be to do a for loop to check if the value exists in the dict and convert to a list if not already
+
     for line in response:
         if '>>>' in line:
             notice = True
@@ -24,7 +27,7 @@ def parse_whois(response):
     return whois
 
     
-def whois_query(domain):
+def domain_query(domain):
     # should only return one record. The -H flag does not show legal information
     command = f'whois "domain {domain}" -H'
     response = subprocess.check_output(command, shell=True, text=True)
